@@ -41,8 +41,14 @@ class CAHNRSWP_Plugin_Core {
 			$admin = new Core_Admin();
 			
 			$admin->the_options();
+			
+			add_action( 'admin_enqueue_scripts', array( $this , 'admin_scripts' ) );
 		
-		} // end if
+		} else {
+			
+			//add_action( 'wp_enqueue_scripts', array( $this , 'admin_scripts' ) );
+			
+		}// end if
 		
 		require_once 'classes/class-core-fact-sheet.php';
 		
@@ -51,6 +57,16 @@ class CAHNRSWP_Plugin_Core {
 		$fact_sheet->init();
 		
 	} // end init
+	
+	
+	public function admin_scripts(){
+		
+		wp_enqueue_style( 'core_admin_css' , plugin_dir_url( __FILE__ ) . 'css/admin.css', array(), '0.0.1' );
+		
+	} // end admin_scripts
+	
+	public function public_scripts(){
+	} // end admin_scripts
 	
 
 } // end CAHNRSWP_Plugin_Core

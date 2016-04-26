@@ -23,20 +23,24 @@ class Core_Fact_Sheet extends Core_Post_Type{
 	protected $do_save = true;
 	
 	protected $fields = array(
+		'_fs_number' => array('', 'text'),
+		'_fs_authors' => array( array() , 'array' ),
 		);
 		
 	
 	public function the_editor( $post ){
 		
+		$settings = $this->get_settings( $post->ID );
+		
 		$html = '<fieldset id="core-fact-sheet">';
 		
 			$html .= '<div>';
 			
-				$html .= '<div class="core-field text-input">';
+				$html .= '<div class="core-field text-input core-field-25">';
 				
 					$html .= '<label>Fact Sheet #</label>';
 					
-					$html .= '<input type="text" name="_fs_number" value="" />';
+					$html .= '<input type="text" name="_fs_number" value="' . $settings['_fs_number'] . '" />';
 				
 				$html .= '</div>';
 			
@@ -46,13 +50,17 @@ class Core_Fact_Sheet extends Core_Post_Type{
 			
 			$index = 0;
 			
-			if ( isset( $post->fs_authors ) && is_array( $post->fs_authors ) ){
+			if ( is_array( $settings['_fs_authors'] ) ){
 				
-				foreach( $post->fs_authors as $i => $author ){
+				foreach( $settings['_fs_authors'] as $i => $author ){
 					
-					$html .= $this->get_author_form( $i , $author );
+					if ( $author['name'] ){
 					
-					$index = $i;
+						$html .= $this->get_author_form( $i , $author );
+					
+						$index = $i;
+					
+					} // end if
 					
 				} // 
 				
@@ -60,7 +68,7 @@ class Core_Fact_Sheet extends Core_Post_Type{
 				
 			} // end if
 			
-			$html .= $this->get_author_form( $index , $author );
+			$html .= $this->get_author_form();
 		
 		$html .= '</fieldset>';
 		
@@ -68,7 +76,19 @@ class Core_Fact_Sheet extends Core_Post_Type{
 		
 	} // end editor
 	
-	public function get_author_form( $index , $author ){
+	public function get_author_form( $index = false , $author = false ){
+		
+		if ( $index === false ){
+			
+			$index = 0;
+			
+		} // end if
+		
+		if ( ! $author ){
+			
+			$author = array( 'name' => '', 'email' => '', 'title' => '' );
+			
+		} // end if
 		
 		$html .= '<div>';
 			
@@ -76,15 +96,15 @@ class Core_Fact_Sheet extends Core_Post_Type{
 			
 				$html .= '<label>Author Name</label>';
 				
-				$html .= '<input type="text" name="_fs_author[' . $index . '][name]" value="" />';
+				$html .= '<input type="text" name="_fs_authors[' . $index . '][name]" value="' . $author['name'] .'" />';
 			
 			$html .= '</div>';
 			
-			$html .= '<div class="core-field text-input core-field-24">';
+			$html .= '<div class="core-field text-input core-field-25">';
 			
 				$html .= '<label>Email</label>';
 				
-				$html .= '<input type="text" name="_fs_author[' . $index . '][email]" value="" />';
+				$html .= '<input type="text" name="_fs_authors[' . $index . '][email]" value="' . $author['email'] .'" />';
 			
 			$html .= '</div>';
 			
@@ -92,7 +112,7 @@ class Core_Fact_Sheet extends Core_Post_Type{
 			
 				$html .= '<label>Title</label>';
 				
-				$html .= '<input type="text" name="_fs_author[' . $index . '][title]" value="" />';
+				$html .= '<input type="text" name="_fs_authors[' . $index . '][title]" value="' . $author['title'] .'" />';
 			
 			$html .= '</div>';
 		

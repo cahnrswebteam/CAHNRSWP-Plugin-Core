@@ -20,6 +20,9 @@ abstract class Core_Post_Type {
 	// @var bool do_save
 	protected $do_save = false;
 	
+	// @var array settings
+	protected $settings = array();
+	
 	protected $fields = array(
 		'_cahnrs_redirect' => array( '', 'text' ),
 		);
@@ -60,6 +63,38 @@ abstract class Core_Post_Type {
 	 */
 	public function get_fields(){ return $this->fields; }
 	
+	/**
+	 * Get post settings
+	 * @param int|bool $post_id Id of the post
+	 * @return array
+	 */
+	public function get_settings( $post_id = false , $is_save = false ){ 
+	
+		if ( $post_id ){
+			
+			$this->set_settings( $post_id , $is_save );
+			
+		} // end if
+	
+		return $this->settings; 
+		
+	}
+	
+	
+	public function get_setting( $key ){
+		
+		if ( array_key_exists( $key , $this->settings ) ){
+			
+			return $this->settings[ $key ];
+			
+		} else {
+			
+			return '';
+			
+		} // end if
+		
+	} 
+	
 	
 	public function init(){
 		
@@ -72,12 +107,6 @@ abstract class Core_Post_Type {
 		if ( method_exists( $this , 'the_editor' ) ){
 			
 			add_action( 'edit_form_after_title' , array( $this , 'the_editor' ) );
-			
-		} // end if
-		
-		if ( $this->do_save ){
-			
-			add_action( 'posts_results', array( $this , 'add_fields' ) );
 			
 		} // end if
 		
@@ -105,7 +134,55 @@ abstract class Core_Post_Type {
 	} // end register
 	
 	
-	public function add_fields( $posts ) {
+	public function set_settings( $post_id , $is_save = false ) {
+		
+		$settings = array();
+		
+		if ( $is_save ){
+			
+			foreach( $this->get_fields() as $key => $field ){
+				
+				if ( isset( $_POST[ $key ] ) ){
+					
+					$this->settings[ $key ] = $_POST[ $key ];
+					
+				} // end if
+				
+				//var_dump( $this->settings );
+				
+			} // end foreach
+			
+		} else {
+		
+			//$meta = get_post_meta( $post_id );
+			
+			foreach( $this->get_fields() as $key => $field ){
+				
+				$meta = get_post_meta( $post_id , $key , true );
+				
+				if ( $meta !== '' ) {
+					
+					$this->settings[ $key ] = $meta;
+					
+				} else {
+					
+					$this->settings[ $key ] = $field[0];
+					
+				}// end if
+				
+				//if ( array_key_exists( $key , $meta ) ){
+					
+					//$this->settings[ $key ] = unserialize ( $meta[ $key ][0] );
+					
+				//} else {
+					
+					//$this->settings[ $key ] = $field[0];
+					
+				//} // end if
+				
+			} // end foreach
+		
+		} // end if
 		
 	} // end add_fields
 	
@@ -118,15 +195,11 @@ abstract class Core_Post_Type {
 		
 		if ( ! $this->check_permissions( $post_id ) ) return false;
 		
-		$fields = $this->get_fields();
+		$settings = $this->get_settings( $post_id , true );
 		
-		foreach( $fields as $key => $field ){
-			
-			if ( isset( $_POST[ $key ] ) ){
+		foreach( $settings  as $key => $value ){
 				
-				update_post_meta( $post_id , $key , sanitize_text_field( $_POST[ $key ] ) );
-				
-			} // end if
+			update_post_meta( $post_id , $key , $value );
 			
 		} // end foreach
 		

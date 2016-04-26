@@ -1,0 +1,47 @@
+/** Fact Sheet ------------------------------------------- **/
+#core-fact-sheet {
+	background: #f5f5f5;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	margin: 2rem 0 1rem;
+	padding: 1rem 1.5rem 2rem;
+	box-sizing: border-box;
+}
+
+#core-fact-sheet h4 {
+	border-bottom: 1px solid #ccc;
+	margin: 1rem 0 0.5rem;
+}
+
+
+
+/** Forms ------------------------------------------- **/
+.core-field {
+	padding: 0.5rem 0;
+}
+
+.core-field.core-field-25,
+.core-field.core-field-50 {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.core-field.core-field-25 { width: 25%; }
+.core-field.core-field-50 { width: 50%; }
+
+
+.core-field.text-input label {
+	display: block;
+	font-weight: bold;
+	font-size: 0.7rem;
+}
+
+.core-field.text-input input {
+	width: 95%;
+	height: 2rem;
+	line-height: 2rem;
+	font-size: 1rem;
+	text-indent: 0.25rem;
+	color: #555;
+}
+ 
