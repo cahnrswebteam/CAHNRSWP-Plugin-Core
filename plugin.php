@@ -5,7 +5,7 @@ Plugin URI: http://cahnrs.wsu.edu/communications
 Description: Core plugins and features for CAHNRS
 Author: cahnrscommunications, Danial Bleile
 Author URI: http://cahnrs.wsu.edu/communications
-Version: 0.0.1
+Version: 1.0.0
 */
 
 class CAHNRSWP_Plugin_Core {
@@ -50,9 +50,9 @@ class CAHNRSWP_Plugin_Core {
 			
 		}// end if
 		
-		require_once 'classes/class-core-fact-sheet.php';
+		require_once 'classes/class-core-web-publication.php';
 		
-		$fact_sheet = new Core_Fact_Sheet();
+		$fact_sheet = new Core_Web_Publication();
 		
 		$fact_sheet->init();
 		

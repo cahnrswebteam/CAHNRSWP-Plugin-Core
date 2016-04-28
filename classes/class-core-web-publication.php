@@ -2,22 +2,22 @@
 
 require_once 'class-core-post-type.php';
 
-class Core_Fact_Sheet extends Core_Post_Type{
+class Core_Web_Publication extends Core_Post_Type{
 	
 	// @var string $slug ID of the post type
-	protected $slug = 'fact_sheet';
+	protected $slug = 'web_publication';
 	
 	// @var string $url Slug to use of url rewrite
-	protected $url = 'fact-sheet';
+	protected $url = 'web-publication';
 	
 	// @var string $label Label to use for the post type
-	protected $label = 'Fact Sheets';
+	protected $label = 'Web Publication';
 	
 	// @var string $label Label to use for the post type
 	protected $labels;
 	
 	// @var string $desc Desctipiton of the post type
-	protected $desc = 'Web Fact Sheets';
+	protected $desc = 'Web Publications';
 	
 	// @var bool do_save
 	protected $do_save = true;
