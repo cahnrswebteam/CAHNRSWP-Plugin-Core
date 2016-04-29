@@ -2,16 +2,16 @@
 
 require_once 'class-core-post-type.php';
 
-class Core_Web_Publication extends Core_Post_Type{
+class Core_Fact_Sheet extends Core_Post_Type{
 	
 	// @var string $slug ID of the post type
-	protected $slug = 'web_publication';
+	protected $slug = 'fact_sheet';
 	
 	// @var string $url Slug to use of url rewrite
-	protected $url = 'web-publication';
+	protected $url = 'fact-sheet';
 	
 	// @var string $label Label to use for the post type
-	protected $label = 'Web Publication';
+	protected $label = 'Fact Sheets';
 	
 	// @var string $label Label to use for the post type
 	protected $labels;
@@ -68,7 +68,7 @@ class Core_Web_Publication extends Core_Post_Type{
 				
 			} // end if
 			
-			$html .= $this->get_author_form( $index );
+			$html .= $this->get_author_form();
 		
 		$html .= '</fieldset>';
 		
@@ -121,19 +121,5 @@ class Core_Web_Publication extends Core_Post_Type{
 		return $html;
 		
 	} // end get_author_form;
-	
-	
-	public function content_filter( $content ){
-		
-		if ( ! defined('DOINGPDF') || ( defined('DOINGPDF') && ! DOINGPDF ) ){
-			
-			$content = 'test' . $content;
-			
-		} // end if
-		
-		return $content;
-		
-	} // end content_filter
-	
 	
 }

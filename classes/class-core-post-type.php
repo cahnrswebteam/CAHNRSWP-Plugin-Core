@@ -110,9 +110,39 @@ abstract class Core_Post_Type {
 			
 		} // end if
 		
+		if ( method_exists( $this , 'content_filter' ) ){
+			
+			add_filter( 'the_content' , array( $this , 'the_content' ), 99 );
+			
+		} // end if
+		
 		add_action( 'init' , array( $this , 'register' ) );
 		
 	} // end init
+	
+	
+	public function the_editor( $post ){
+		
+		if ( $post->post_type == $this->get_slug() ){
+			
+			$this->editor( $post );
+			
+		} // end if 
+		
+	} // end the_editor
+	
+	
+	public function the_content( $content ){
+		
+		if ( is_singular( $this->get_slug() ) ){
+			
+			$content = $this->content_filter( $content );
+			
+		} // end if
+		
+		return $content;
+		
+	} // end the_content
 	
 	
 	public function register(){
@@ -193,9 +223,12 @@ abstract class Core_Post_Type {
 	 */
 	public function save( $post_id ){
 		
+		
 		if ( ! $this->check_permissions( $post_id ) ) return false;
 		
 		$settings = $this->get_settings( $post_id , true );
+		
+		//var_dump( $settings );
 		
 		foreach( $settings  as $key => $value ){
 				

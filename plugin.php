@@ -56,6 +56,12 @@ class CAHNRSWP_Plugin_Core {
 		
 		$fact_sheet->init();
 		
+		require_once 'classes/class-core-fact-sheet.php';
+		
+		$fact_sheet = new Core_Fact_Sheet();
+		
+		$fact_sheet->init();
+		
 	} // end init
 	
 	
